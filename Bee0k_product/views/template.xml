@@ -1,0 +1,31 @@
+<odoo>
+    <template id="product_price" inherit_id="website_sale.product_price" name="Product Price">
+        <xpath expr="//h4//span[1]" position="replace">
+            <span t-attf-class="text-danger oe_default_price {{'' if combination_info['has_discounted_price'] else 'd-none'}}" style="text-decoration: line-through; white-space: nowrap;"
+                  t-esc="combination_info['list_price']" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"
+              />
+        </xpath>
+
+        <xpath expr="//h4//b" position="replace">
+            <b class="oe_price" style="white-space: nowrap;" t-esc="combination_info['price']" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>
+        </xpath>
+    </template>
+
+    <template id="products_item" inherit_id="website_sale.products_item" name="Products item">
+        <xpath expr="//section//span" position="replace">
+            <span t-if="combination_info['price']" t-esc="combination_info['price']" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>
+        </xpath>
+    </template>
+        
+    <template id="cart_summary" inherit_id="website_sale.cart_summary" name="Cart right column">
+        <xpath expr="//span[@t-field='line.price_reduce_taxexcl']" position="replace">
+            <span t-field="line.price_reduce_taxexcl" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': line.product_id.currency_id}" groups="account.group_show_line_subtotals_tax_excluded" />
+        </xpath>
+    </template>
+
+    <template id="cart_lines" inherit_id="website_sale.cart_lines" name="Shopping Cart Lines">
+        <xpath expr="//span[@t-field='line.price_reduce_taxexcl']" position="replace">
+            <span t-field="line.price_reduce_taxexcl" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': line.product_id.currency_id}" groups="account.group_show_line_subtotals_tax_excluded" />
+        </xpath>
+    </template>
+</odoo>
