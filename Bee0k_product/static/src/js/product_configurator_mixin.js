@@ -93,7 +93,6 @@ odoo.define('Bee0k_product.website_sale', function (require) {
                 productIDs.push($(elem).find('span[data-product-id]').data('product-id'));
             });
             $input.data('update_change', true);
-            debugger;
             this._rpc({
                 route: "/shop/cart/update_json",
                 params: {
@@ -107,7 +106,6 @@ odoo.define('Bee0k_product.website_sale', function (require) {
                 if (isNaN(check_value)) {
                     check_value = 1;
                 }
-                debugger;
                 if (value !== check_value) {
                     $input.trigger('change');
                     return;
