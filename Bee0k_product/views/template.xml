@@ -1,4 +1,10 @@
 <odoo>
+    <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website Sale Stock">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/Bee0k_product/static/src/js/product_configurator_mixin.js" />
+        </xpath>
+    </template>
+
     <template id="product_price" inherit_id="website_sale.product_price" name="Product Price">
         <xpath expr="//h4//span[1]" position="replace">
             <span t-attf-class="text-danger oe_default_price {{'' if combination_info['has_discounted_price'] else 'd-none'}}" style="text-decoration: line-through; white-space: nowrap;"
