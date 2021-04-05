@@ -42,6 +42,9 @@ odoo.define('Bee0k_product.ProductConfiguratorMixin', function (require) {
                 var $input_add_qty = $parent.find('input[name="add_qty"]');
                 qty = combination.virtual_available || 1;
                 $input_add_qty.val(qty);
+                var qty_g = qty*1000;
+                document.getElementById("add_qty_kg").innerHTML = qty.toString()
+                document.getElementById("add_qty_g").innerHTML = qty_g.toString()
             }
             if (qty > combination.virtual_available
                 || combination.virtual_available < 1 || qty < 0) {
