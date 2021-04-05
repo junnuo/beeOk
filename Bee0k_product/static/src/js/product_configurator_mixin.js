@@ -27,6 +27,9 @@ odoo.define('Bee0k_product.ProductConfiguratorMixin', function (require) {
         }
     
         var qty = $parent.find('input[name="add_qty"]').val();
+        var qty_g = qty*1000;
+        document.getElementById("add_qty_kg").innerHTML = qty.toString()
+        document.getElementById("add_qty_g").innerHTML = qty_g.toString()
     
         $parent.find('#add_to_cart').removeClass('out_of_stock');
         if (combination.product_type === 'product' && _.contains(['always', 'threshold'], combination.inventory_availability)) {
