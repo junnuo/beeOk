@@ -34,4 +34,32 @@
             <span t-field="line.price_reduce_taxexcl" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': line.product_id.currency_id}" groups="account.group_show_line_subtotals_tax_excluded" />
         </xpath>
     </template>
+
+    <template id="product_quantity" inherit_id="website_sale.product_quantity" name="Products quantity">
+        <xpath expr="//div[hasclass('css_quantity')]" position="replace">
+            <div class="row">
+                <div class="col-6">
+                    <div class="css_quantity input-group oe_website_spinner" contenteditable="false">
+                        <div class="input-group-prepend">
+                            <a t-attf-href="#" class="btn btn-secondary js_add_cart_json" aria-label="Remove one" title="Remove one">
+                                <i class="fa fa-minus"></i>
+                            </a>
+                        </div>
+                        <input type="text" class="form-control quantity" data-min="1" name="add_qty" t-att-value="add_qty or 1"/>
+                        <div class="input-group-append">
+                            <a t-attf-href="#" class="btn btn-secondary float_left js_add_cart_json" aria-label="Add one" title="Add one">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="display: inline-block;" t-if="product.currency_id.name == 'EKG'">
+                        <p>Vous êtes sur le point d’ajouter <span id="add_qty_g"></span> grammes (<span id="add_qty_kg"></span> kg) de ce produit à votre
+        commande. Si cela vous convient, cliquez sur ajouter au panier.</p>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
 </odoo>
