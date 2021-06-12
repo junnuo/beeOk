@@ -56,10 +56,16 @@ class Sale(models.Model):
         if not add_qty and set_qty == 0 and not self._context.get('bypass_check', False):
             order_line = self.order_line.filtered(lambda line: line.id == line_id)
             container = order_line.consigne
-            container_line = self.order_line.filtered(lambda line: line.product_id.id == container.id)
-            container_line.product_uom_qty -= 1
-            if container_line.product_uom_qty == 0:
-                container_line.unlink()
+            if container:
+                container_line = self.order_line.filtered(lambda line: line.product_id.id == container.id)
+                container_line.product_uom_qty -= 1
+                if container_line.product_uom_qty == 0:
+                    container_line.unlink()
+        if request.env['product.product'].browse(int(product_id)).currency_id.name == 'EKG':
+            if add_qty:
+                add_qty = str(float(add_qty)/1000.0)
+            if set_qty:
+                set_qty = float(set_qty)/1000.0
         res = super()._cart_update(product_id, line_id, add_qty, set_qty, **kwargs)
         if kwargs.get('container', False):
             order_line = self.env['sale.order.line'].browse(res.get('line_id'))

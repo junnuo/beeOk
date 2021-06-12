@@ -25,11 +25,15 @@ odoo.define('Bee0k_product.ProductConfiguratorMixin', function (require) {
         if (!this.isWebsite || !isMainProduct){
             return;
         }
-    
-        var qty = $parent.find('input[name="add_qty"]').val();
-        var qty_g = qty*1000;
-        document.getElementById("add_qty_kg").innerHTML = qty.toString()
-        document.getElementById("add_qty_g").innerHTML = qty_g.toString()
+        
+        if ($('#info_qty')[0]) {
+            var qty_g = $parent.find('input[name="add_qty"]').val();
+            var qty = qty_g/1000;
+            document.getElementById("add_qty_kg").innerHTML = qty.toString()
+            document.getElementById("add_qty_g").innerHTML = qty_g.toString()
+        } else {
+            var qty = $parent.find('input[name="add_qty"]').val();
+        }
     
         $parent.find('#add_to_cart').removeClass('out_of_stock');
         if (combination.product_type === 'product' && _.contains(['always', 'threshold'], combination.inventory_availability)) {
@@ -42,9 +46,11 @@ odoo.define('Bee0k_product.ProductConfiguratorMixin', function (require) {
                 var $input_add_qty = $parent.find('input[name="add_qty"]');
                 qty = combination.virtual_available || 1;
                 $input_add_qty.val(qty);
-                var qty_g = qty*1000;
-                document.getElementById("add_qty_kg").innerHTML = qty.toString()
-                document.getElementById("add_qty_g").innerHTML = qty_g.toString()
+                if ($('#info_qty')[0]) {
+                    var qty_g = qty*1000;
+                    document.getElementById("add_qty_kg").innerHTML = qty.toString()
+                    document.getElementById("add_qty_g").innerHTML = qty_g.toString()
+                }
             }
             if (qty > combination.virtual_available
                 || combination.virtual_available < 1 || qty < 0) {
@@ -172,9 +178,11 @@ odoo.define('Bee0k_product.website_sale_beeok', function (require) {
 
     website_sale.include({
         _onClickAdd: function (ev) {
-            var kraft = $('#kraft')[0].checked;
-            var box = $('#box')[0].checked;
-            if (!kraft && !box){
+            if ($('#info_qty')[0]){
+                var kraft = $('#kraft')[0].checked;
+                var box = $('#box')[0].checked;
+            }
+            if (!kraft && !box && $('#info_qty')[0]){
                 $('#warning_container')[0].innerHTML = "Veuillez choisir un contenant avant d'ajouter le produit";
             }
             else if(!$('#info_qty')[0] && parseFloat($('input[name="add_qty"]').val() || 1) % 1 != 0){
@@ -207,9 +215,10 @@ odoo.define('Bee0k_product.website_sale_beeok', function (require) {
             return productReady.done(function (productId) {
                 $form.find(productSelector.join(', ')).val(productId);
     
+                var quantity = 1;
                 self.rootProduct = {
                     product_id: productId,
-                    quantity: parseFloat($form.find('input[name="add_qty"]').val() || 1),
+                    quantity: quantity,
                     product_custom_attribute_values: self.getCustomVariantValues($form.find('.js_product')),
                     variant_values: self.getSelectedVariantValues($form.find('.js_product')),
                     no_variant_attribute_values: self.getNoVariantAttributeValues($form.find('.js_product'))

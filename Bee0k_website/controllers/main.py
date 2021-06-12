@@ -33,10 +33,18 @@ class WebsiteSale(WebsiteSale):
         if kw.get('no_variant_attribute_values'):
             no_variant_attribute_values = json.loads(kw.get('no_variant_attribute_values'))
 
-        if kw['consigne'] == 'box':
-            container_id = request.env['product.product'].search([('type','=','box')]).id
+        if request.env['product.product'].browse(int(product_id)).currency_id.name == 'EKG':
+            if kw.get('consigne', False) == 'box':
+                container_id = request.env['product.product'].search([('type','=','box')]).id
+            if kw.get('consigne', False) == 'kraft':
+                container_id = request.env['product.product'].search([('type','=','kraft')]).id
+            sale_order._cart_update(
+                product_id=container_id,
+                add_qty=1,
+                set_qty=0,
+            )
         else:
-            container_id = request.env['product.product'].search([('type','=','kraft')]).id
+            container_id = False
 
         sale_order._cart_update(
             product_id=int(product_id),
@@ -45,12 +53,6 @@ class WebsiteSale(WebsiteSale):
             product_custom_attribute_values=product_custom_attribute_values,
             no_variant_attribute_values=no_variant_attribute_values,
             container=container_id,
-        )
-
-        sale_order._cart_update(
-            product_id=container_id,
-            add_qty=1,
-            set_qty=0,
         )
 
         if not sale_order.order_line.filtered(lambda line: line.product_id.type == 'preparation_fees'):

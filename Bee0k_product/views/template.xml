@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            <div id="consigne">
+            <div t-if="product.currency_id.name == 'EKG'" id="consigne">
                 <p>Veuillez selectionner un emballage</p>
                 <input type="radio" id="kraft" name="consigne" value="kraft"/>
                 <label for="kraft">Sachet kraft (0,10 €)</label><br/>
@@ -98,8 +98,16 @@
                 <input type="text" class="js_quantity form-control quantity" disabled="True" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty) == line.product_uom_qty and int(line.product_uom_qty) or line.product_uom_qty"/>
             </t>
             <t t-else="">
-                <input t-if="line.product_id.type != 'preparation_fees' and line.product_id.type != 'delivery_fees'" t-att-data-currency="line.product_id.currency_id.name" type="text" class="js_quantity form-control quantity" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty) == line.product_uom_qty and int(line.product_uom_qty) or line.product_uom_qty"/>
+                <t t-if="line.product_id.currency_id.name == 'EKG'">
+                    <input t-if="line.product_id.type != 'preparation_fees' and line.product_id.type != 'delivery_fees'" t-att-data-currency="line.product_id.currency_id.name" type="text" class="js_quantity form-control quantity" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="line.product_uom_qty*1000.0"/>
+                </t>
+                <t t-else="">
+                    <input t-if="line.product_id.type != 'preparation_fees' and line.product_id.type != 'delivery_fees'" t-att-data-currency="line.product_id.currency_id.name" type="text" class="js_quantity form-control quantity" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty) == line.product_uom_qty and int(line.product_uom_qty) or line.product_uom_qty"/>
+                </t>
             </t>
+        </xpath>
+        <xpath expr="//td[@name='price']//span[1]" position="replace">
+            <span t-field="line.price_reduce_taxexcl" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': line.product_id.currency_id}" groups="account.group_show_line_subtotals_tax_excluded" />
         </xpath>
     </template>
 </odoo>
