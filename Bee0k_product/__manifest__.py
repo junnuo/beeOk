@@ -7,12 +7,13 @@
 Bee0k Product customisation
 """,
     'depends': [
-        'product', 'website_sale_stock',
+        'product', 'website_sale_stock', 'web', 'website_sale', 'sale',
     ],
     'data': [
         # views
         'views/product_views.xml',
         'views/template.xml',
+        'views/sale_views.xml',
         # datas
         # security
         # wizard

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>   
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sale_order_template_id']" position="after">
+                <field name="way_of_delivery"/>
+            </xpath>
+            <xpath expr="//tree//field[@name='name']" position="after">
+                <field name="consigne"/>
+            </xpath>
+            <xpath expr="//field[@name='amount_tax']" position="after">
+                <field name="caution_discount"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Horaire de livraison" attrs="{'invisible': [('way_of_delivery','!=','delivery')]}">
+                    <group>
+                        <group>
+                            <label for="first_date"/>
+                            <div>
+                                <field name="first_date" class="oe_inline"/><span>: </span>
+                                <field name="first_time" class="oe_inline" widget="float_time"/><span> - </span>
+                                <field name="first_time_end" class="oe_inline" widget="float_time"/>
+                            </div>
+                        </group>
+                        <group>
+                            <label for="second_date"/>
+                            <div>
+                                <field name="second_date" class="oe_inline"/><span>:  </span>
+                                <field name="second_time" class="oe_inline" widget="float_time"/><span> - </span>
+                                <field name="second_time_end" class="oe_inline" widget="float_time"/>
+                            </div>
+                        </group>
+                        <group>
+                            <label for="third_date"/>
+                            <div>
+                                <field name="third_date" class="oe_inline"/><span>:  </span>
+                                <field name="third_time" class="oe_inline" widget="float_time"/><span> - </span>
+                                <field name="third_time_end" class="oe_inline" widget="float_time"/>
+                            </div>
+                        </group>
+                    </group>
+                </page>
+                <page string="Horaire de récupération" attrs="{'invisible': [('way_of_delivery','!=','take_away')]}">
+                    <group>
+                        <group>
+                            <label for="take_away_date"/>
+                            <div>
+                                <field name="take_away_date" class="oe_inline"/><span>: </span>
+                                <field name="take_away_start_hour" class="oe_inline" widget="float_time"/><span> - </span>
+                                <field name="take_away_end_hour" class="oe_inline" widget="float_time"/>
+                            </div>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

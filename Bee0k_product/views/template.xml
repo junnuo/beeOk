@@ -54,12 +54,52 @@
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="display: inline-block;" t-if="product.currency_id.name == 'EKG'">
+                    <div class="display: inline-block;" t-if="product.currency_id.name == 'EKG'" id="info_qty">
                         <p>Vous êtes sur le point d’ajouter <span id="add_qty_g"></span> grammes (<span id="add_qty_kg"></span> kg) de ce produit à votre
         commande. Si cela vous convient, cliquez sur ajouter au panier.</p>
                     </div>
                 </div>
             </div>
+            <div id="consigne">
+                <p>Veuillez selectionner un emballage</p>
+                <input type="radio" id="kraft" name="consigne" value="kraft"/>
+                <label for="kraft">Sachet kraft (0,10 €)</label><br/>
+                <input type="radio" id="box" name="consigne" value="box"/>
+                <label for="box">Boîte réutilisable (4,00 €)</label>
+            </div>
+        </xpath>
+        <xpath expr="//a[@id='add_to_cart']" position="after">
+            <p id="warning_container" style="color: red; margin: 5%;"></p>
+            <p id="warning_unity" style="color: red; margin: 5%;"></p>
+        </xpath>
+    </template>
+
+    <template id="total" inherit_id="website_sale.total" name="Total">
+        <xpath expr="//tr[@id='order_total_taxes']" position="after">
+            <td class="text-right noborder">Remise consigne:</td>
+            <td class="text-xl-right noborder">
+                <span t-field="website_sale_order.caution_discount" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}" />
+            </td>
+        </xpath>
+    </template>
+
+    <template id="cart_lines" inherit_id="website_sale.cart_lines" name="Shopping Cart Lines">
+        <xpath expr="//a[hasclass('js_delete_product')]" position="attributes">
+            <attribute name="t-if">line.product_id.type != 'box' and line.product_id.type != 'kraft' and line.product_id.type != 'preparation_fees' and line.product_id.type != 'delivery_fees'</attribute>
+        </xpath>
+        <xpath expr="//i[hasclass('fa-minus')]/.." position="attributes">
+            <attribute name="t-if">line.product_id.type != 'box' and line.product_id.type != 'kraft' and line.product_id.type != 'preparation_fees' and line.product_id.type != 'delivery_fees'</attribute>
+        </xpath>
+        <xpath expr="//i[hasclass('fa-plus')]/.." position="attributes">
+            <attribute name="t-if">line.product_id.type != 'box' and line.product_id.type != 'kraft' and line.product_id.type != 'preparation_fees' and line.product_id.type != 'delivery_fees'</attribute>
+        </xpath>
+        <xpath expr="//input[hasclass('js_quantity')]" position="replace">
+            <t t-if="line.product_id.type == 'box' or line.product_id.type == 'kraft'">
+                <input type="text" class="js_quantity form-control quantity" disabled="True" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty) == line.product_uom_qty and int(line.product_uom_qty) or line.product_uom_qty"/>
+            </t>
+            <t t-else="">
+                <input t-if="line.product_id.type != 'preparation_fees' and line.product_id.type != 'delivery_fees'" t-att-data-currency="line.product_id.currency_id.name" type="text" class="js_quantity form-control quantity" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty) == line.product_uom_qty and int(line.product_uom_qty) or line.product_uom_qty"/>
+            </t>
         </xpath>
     </template>
 </odoo>

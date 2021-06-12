@@ -23,4 +23,172 @@
                 </li>
         </xpath>
     </template>
+
+    <template id="extra_info" name="Checkout Extra Info" inherit_id="website_sale.extra_info">
+        <xpath expr="//input[@name='a_document']/../.." position="after">
+            <div style="margin: 10%;">
+                <t t-set="way_of_delivery" t-value="order.way_of_delivery"/>
+                <input type="radio" id="take_away" name="choice" value="take_away" t-att-checked="way_of_delivery == 'take_away'"/>
+                <label for="choice">Venir chercher sur place (21 Hortensialaan, 1731 Zellik)</label><br/>
+                <input type="radio" id="delivery" name="choice" value="delivery" t-att-checked="way_of_delivery == 'delivery'"/>
+                <label for="choice">Livraison à domicile</label>
+            </div>
+            <div style="margin: 5%;" id="take_away_slot">
+                <div>
+                    <h4>Veuillez choisir un horaire pour la récupération de la commande</h4>
+                </div>
+                <div style="margin-top: 3%">
+                    <t t-set="slots" t-value="request.env['delivery.availability'].search([('is_available','=',True), ('is_take_away','=',True)], order='start_hour')"/>
+                    <ul style="list-style-type: none;">
+                        <t t-foreach="slots" t-as="slot">
+                            <li>
+                                <input type="checkbox" t-att-value="slot.id" t-att-name="slot.id"/>
+                                <label><span t-if="slot.day == 'monday'">Lundi</span>
+                                <span t-if="slot.day == 'tuesday'">Mardi</span>
+                                <span t-if="slot.day == 'wednesday'">Mercredi</span>
+                                <span t-if="slot.day == 'thursday'">Jeudi</span>
+                                <span t-if="slot.day == 'friday'">Vendredi</span>
+                                <span t-if="slot.day == 'saturday'">Samedi</span>
+                                <span t-if="slot.day == 'sunday'">Dimanche</span>
+                                : <span t-esc="slot.start_hour" t-options="{'widget': 'float_time'}"/> - <span t-esc="slot.end_hour" t-options="{'widget': 'float_time'}"/></label>
+                            </li>
+                        </t>
+                    </ul>
+                </div>
+            </div>
+            <div style="margin: 5%; display: none;" id="delivery_slot">
+                <div>
+                    <h4>Veuillez choisir au moins un et au maximum trois horaires de livraison</h4> 
+                </div>
+                <div class="row" style="border-style: solid; margin-top: 3%">
+                    <div class="col-sm-4">
+                        <t t-set="slots" t-value="request.env['delivery.availability'].search([('day','=','monday'), ('is_available','=',True), ('is_take_away','=',False)], order='start_hour')"/>
+                        <h3 class="text-center">Lundi</h3>
+                        <ul style="list-style-type: none;">
+                            <t t-foreach="slots" t-as="slot">
+                                <li>
+                                    <input type="checkbox" t-att-value="slot.id" t-att-name="slot.id"/>
+                                    <label><span t-esc="slot.start_hour" t-options="{'widget': 'float_time'}"/> - <span t-esc="slot.end_hour" t-options="{'widget': 'float_time'}"/></label>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4">
+                        <t t-set="slots" t-value="request.env['delivery.availability'].search([('day','=','tuesday'), ('is_available','=',True), ('is_take_away','=',False)], order='start_hour')"/>
+                        <h3 class="text-center">Mardi</h3>
+                        <ul style="list-style-type: none;">
+                            <t t-foreach="slots" t-as="slot">
+                                <li>
+                                    <input type="checkbox" t-att-value="slot.id" t-att-name="slot.id"/>
+                                    <label><span t-esc="slot.start_hour" t-options="{'widget': 'float_time'}"/> - <span t-esc="slot.end_hour" t-options="{'widget': 'float_time'}"/></label>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4">
+                        <t t-set="slots" t-value="request.env['delivery.availability'].search([('day','=','wednesday'), ('is_available','=',True), ('is_take_away','=',False)], order='start_hour')"/>
+                        <h3 class="text-center">Mercredi</h3>
+                        <ul style="list-style-type: none;">
+                            <t t-foreach="slots" t-as="slot">
+                                <li>
+                                    <input type="checkbox" t-att-value="slot.id" t-att-name="slot.id"/>
+                                    <label><span t-esc="slot.start_hour" t-options="{'widget': 'float_time'}"/> - <span t-esc="slot.end_hour" t-options="{'widget': 'float_time'}"/></label>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row" style="border-style: solid; margin-top: 3%">
+                    <div class="col-sm-6">
+                        <t t-set="slots" t-value="request.env['delivery.availability'].search([('day','=','thursday'), ('is_available','=',True), ('is_take_away','=',False)], order='start_hour')"/>
+                        <h3 class="text-center">Jeudi</h3>
+                        <ul style="list-style-type: none;">
+                            <t t-foreach="slots" t-as="slot">
+                                <li>
+                                    <input type="checkbox" t-att-value="slot.id" t-att-name="slot.id"/>
+                                    <label><span t-esc="slot.start_hour" t-options="{'widget': 'float_time'}"/> - <span t-esc="slot.end_hour" t-options="{'widget': 'float_time'}"/></label>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6">
+                        <t t-set="slots" t-value="request.env['delivery.availability'].search([('day','=','friday'), ('is_available','=',True), ('is_take_away','=',False)], order='start_hour')"/>
+                        <h3 class="text-center">Vendredi</h3>
+                        <ul style="list-style-type: none;">
+                            <t t-foreach="slots" t-as="slot">
+                                <li>
+                                    <input type="checkbox" t-att-value="slot.id" t-att-name="slot.id"/>
+                                    <label><span t-esc="slot.start_hour" t-options="{'widget': 'float_time'}"/> - <span t-esc="slot.end_hour" t-options="{'widget': 'float_time'}"/></label>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row" style="border-style: solid; margin-top: 3%">
+                    <div class="col-sm-6">
+                        <t t-set="slots" t-value="request.env['delivery.availability'].search([('day','=','saturday'), ('is_available','=',True), ('is_take_away','=',False)], order='start_hour')"/>
+                        <h3 class="text-center">Samedi</h3>
+                        <ul style="list-style-type: none;">
+                            <t t-foreach="slots" t-as="slot">
+                                <li>
+                                    <input type="checkbox" t-att-value="slot.id" t-att-name="slot.id"/>
+                                    <label><span t-esc="slot.start_hour" t-options="{'widget': 'float_time'}"/> - <span t-esc="slot.end_hour" t-options="{'widget': 'float_time'}"/></label>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6">
+                        <t t-set="slots" t-value="request.env['delivery.availability'].search([('day','=','sunday'), ('is_available','=',True), ('is_take_away','=',False)], order='start_hour')"/>
+                        <h3 class="text-center">Dimanche</h3>
+                        <ul style="list-style-type: none;">
+                            <t t-foreach="slots" t-as="slot">
+                                <li>
+                                    <input type="checkbox" t-att-value="slot.id" t-att-name="slot.id"/>
+                                    <label><span t-esc="slot.start_hour" t-options="{'widget': 'float_time'}"/> - <span t-esc="slot.end_hour" t-options="{'widget': 'float_time'}"/></label>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 5%;">
+                <h4 t-if="order.warning_low" style="color: red;">Veuillez choisir au moins un horaire de livraison</h4>
+                <h4 t-if="order.warning_high" style="color: red;">Veuillez choisir au maximum trois horaires de livraison</h4> 
+            </div>
+            <div style="margin-top: 5%;">
+                <h4 t-if="order.warning_low_take_away" style="color: red;">Veuillez choisir un horaire</h4>
+                <h4 t-if="order.warning_high_take_away" style="color: red;">Veuillez choisir qu'un seul horaire</h4> 
+            </div>
+            <div id="available_zip" style="margin-top: 5%;" t-if="order.not_deliverable and way_of_delivery == 'delivery'">
+                <p>Malheureusement, nous ne livrons pas encore dans votre commune. Veuillez soit choisir de venir emporter votre commande,
+                soir de changer l'adresse de livraison situé dans une des communes suivantes:</p>
+                <t t-set="avalaible_zone" t-value="request.env['delivery.availability.zone'].search([], order='zip asc')"/>
+                <div class="row" style="margin-bottom: 5%;">
+                    <div t-foreach="avalaible_zone" t-as="zone" class="col-4 text-center">
+                        <span t-esc="zone.name"/> - <span t-esc="zone.zip"/>
+                    </div>
+                </div>
+            </div>
+            <script>
+                if ($('#take_away')[0].checked){
+                    $('#take_away_slot').show()
+                    $('#delivery_slot').hide()
+                }
+                else {
+                    $('#delivery_slot').show()
+                    $('#take_away_slot').hide()
+                }
+                $('#take_away').click(function(){
+                    $('#take_away_slot').show()
+                    $('#delivery_slot').hide()
+                });
+                $('#delivery').click(function(){
+                    $('#delivery_slot').show()
+                    $('#take_away_slot').hide()
+                });
+            </script>
+        </xpath>
+    </template>
 </odoo>

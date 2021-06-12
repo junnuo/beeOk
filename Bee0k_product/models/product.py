@@ -7,6 +7,10 @@ class Product(models.Model):
     currency_id = fields.Many2one(
         'res.currency', 'Currency',
         required=True, compute='_get_currency_id')
+    type = fields.Selection(selection_add=[('box', 'Box'), ('kraft', 'Kraft'), ('preparation_fees', 'Frais de préparation'), ('delivery_fees', 'Frais de livraison')])
+
+    def get_curreny(self):
+        return self.currency_id.name
 
     @api.depends('uom_id')
     def _get_currency_id(self):

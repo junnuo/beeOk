@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="_assets_primary_variables" inherit_id="website_sale.address">
+        <xpath expr="//div[hasclass('justify-content-between')]" position="after">
+            <p>Pour en savoir plus sur la manière dont sera traitée vos données personnelles, cliquez <a href="/data-protection-policy">ici</a></p>
+            <div>
+                <input type="checkbox" required="1" name="age_verification"/>
+                <label for="age_verification">Je déclare avoir plus de 18 ans afin de pouvoir commander sur ce site internet</label>
+            </div>
+            <p t-if="error_age" style="color:red;">Veuillez confirmer que vous avez plus de 18 ans pour continuer</p>
+        </xpath>
+        <xpath expr="//form//label[@for='street2']" position="replace">
+        </xpath>
+        <xpath expr="//input[@name='street2']/.." position="replace">
+        </xpath>
+        <xpath expr="//input[@name='company_name']/.." position="replace">
+        </xpath>
+        <xpath expr="//input[@name='vat']/.." position="replace">
+        </xpath>
+        <xpath expr="//input[@name='field_required']" position="after">
+            <div id="available_zip" style="margin-top: 5%; margin-bottom: 5%;">
+                <p>Veuillez noter que nous ne livrons pour le moment que dans les communes suivantes:</p>
+                <t t-set="avalaible_zone" t-value="request.env['delivery.availability.zone'].search([], order='zip asc')"/>
+                <div class="row" style="margin-bottom: 3%;">
+                    <div t-foreach="avalaible_zone" t-as="zone" class="col-4 text-center">
+                        <span t-esc="zone.name"/> - <span t-esc="zone.zip"/>
+                    </div>
+                </div>
+                <p>Si votre commune ne se trouve pas dans cette liste, il est toutefois possible de récupérer votre commande sur place (21 Hortensialaan, 1731 Zellik), choix à cocher à la prochaine étape</p>
+            </div>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_delivery_availability" model="ir.actions.act_window">
+        <field name="name">Delivery availability</field>
+        <field name="res_model">delivery.availability</field>
+        <field name='view_type'>form</field>
+        <field name='view_mode'>tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new delivery availability
+            </p>
+        </field>
+    </record>
+
+    <record id="action_delivery_available_zone" model="ir.actions.act_window">
+        <field name="name">Delivery available zone</field>
+        <field name="res_model">delivery.availability.zone</field>
+        <field name='view_type'>form</field>
+        <field name='view_mode'>tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new delivery available zone
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_ecommerce_delivery_availability"
+        action="action_delivery_availability"
+        parent="website_sale.menu_ecommerce_settings" name="Delivery availability"/>
+
+    <menuitem id="menu_ecommerce_delivery_available_zone"
+        action="action_delivery_available_zone"
+        parent="website_sale.menu_ecommerce_settings" name="Delivery availabile zone"/>
+</odoo>

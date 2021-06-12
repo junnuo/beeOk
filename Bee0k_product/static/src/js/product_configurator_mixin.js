@@ -74,8 +74,17 @@ odoo.define('Bee0k_product.website_sale', function (require) {
     // var ProductConfiguratorMixin = require('sale.ProductConfiguratorMixin');
     var sAnimations = require('website.content.snippets.animation');
     sAnimations.registry.WebsiteSale.include({
+        events: _.extend({
+            'focus .oe_cart input.js_quantity[data-product-id]': '_onFocusCartQuantity',
+        }, sAnimations.registry.WebsiteSale.prototype.read_events),
+
+        _onFocusCartQuantity: function(ev){
+            $(this).data('val', ev.target.value);
+        },
 
         _onChangeCartQuantity: function (ev) {
+            var self = this
+            var old_value = $(this).data('val')
             var $input = $(ev.currentTarget);
             if ($input.data('update_change')) {
                 return;
@@ -84,14 +93,18 @@ odoo.define('Bee0k_product.website_sale', function (require) {
             if (isNaN(value)) {
                 value = 1;
             }
-            var $dom = $input.closest('tr');
-            // var default_price = parseFloat($dom.find('.text-danger > span.oe_currency_value').text());
-            var $dom_optional = $dom.nextUntil(':not(.optional_product.info)');
-            var line_id = parseInt($input.data('line-id'), 10);
-            var productIDs = [parseInt($input.data('product-id'), 10)];
-            this._changeCartQuantity($input, value, $dom_optional, line_id, productIDs);
+            if (value % 1 != 0 && $input.data('currency') != 'EKG'){
+                ev.target.value = old_value
+            }
+            else {
+                var $dom = $input.closest('tr');
+                // var default_price = parseFloat($dom.find('.text-danger > span.oe_currency_value').text());
+                var $dom_optional = $dom.nextUntil(':not(.optional_product.info)');
+                var line_id = parseInt($input.data('line-id'), 10);
+                var productIDs = [parseInt($input.data('product-id'), 10)];
+                self._changeCartQuantity($input, value, $dom_optional, line_id, productIDs);
+            }
         },
-
 
         _changeCartQuantity: function ($input, value, $dom_optional, line_id, productIDs) {
             _.each($dom_optional, function (elem) {
@@ -144,4 +157,80 @@ odoo.define('Bee0k_product.website_sale', function (require) {
             });
         }
     })
+})
+
+
+odoo.define('Bee0k_product.website_sale_beeok', function (require) {
+    'use strict';
+
+    var OptionalProductsModal = require('sale.OptionalProductsModal');
+    var sAnimations = require('website.content.snippets.animation')
+    var website_sale = require('website_sale_options.website_sale');
+    var core = require('web.core');
+    var _t = core._t;
+    // sAnimations.registry.WebsiteSaleOptions = sAnimations.Class.extend(website_sale, {
+
+    website_sale.include({
+        _onClickAdd: function (ev) {
+            var kraft = $('#kraft')[0].checked;
+            var box = $('#box')[0].checked;
+            if (!kraft && !box){
+                $('#warning_container')[0].innerHTML = "Veuillez choisir un contenant avant d'ajouter le produit";
+            }
+            else if(!$('#info_qty')[0] && parseFloat($('input[name="add_qty"]').val() || 1) % 1 != 0){
+                $('#warning_container')[0].innerHTML = "";
+                $('#warning_unity')[0].innerHTML = "Veuillez choisir une valeur entière pour les produits à l'unité";
+            }
+            else {
+                ev.preventDefault();
+                return this._handleAdd($(ev.currentTarget).closest('form'));
+            }
+        },
+
+        _handleAdd: function ($form) {
+            var self = this;
+            this.$form = $form;
+            this.isWebsite = true;
+    
+            var productSelector = [
+                'input[type="hidden"][name="product_id"]',
+                'input[type="radio"][name="product_id"]:checked'
+            ];
+    
+            var productReady = this.selectOrCreateProduct(
+                $form,
+                parseInt($form.find(productSelector.join(', ')).first().val(), 10),
+                $form.find('.product_template_id').val(),
+                false
+            );
+    
+            return productReady.done(function (productId) {
+                $form.find(productSelector.join(', ')).val(productId);
+    
+                self.rootProduct = {
+                    product_id: productId,
+                    quantity: parseFloat($form.find('input[name="add_qty"]').val() || 1),
+                    product_custom_attribute_values: self.getCustomVariantValues($form.find('.js_product')),
+                    variant_values: self.getSelectedVariantValues($form.find('.js_product')),
+                    no_variant_attribute_values: self.getNoVariantAttributeValues($form.find('.js_product'))
+                };
+    
+                self.optionalProductsModal = new OptionalProductsModal($form, {
+                    rootProduct: self.rootProduct,
+                    isWebsite: true,
+                    okButtonText: _t('Proceed to Checkout'),
+                    cancelButtonText: _t('Continue Shopping'),
+                    title: _t('Add to cart')
+                }).open();
+    
+                self.optionalProductsModal.on('options_empty', null, self._onModalOptionsEmpty.bind(self));
+                self.optionalProductsModal.on('update_quantity', null, self._onOptionsUpdateQuantity.bind(self));
+                self.optionalProductsModal.on('confirm', null, self._onModalConfirm.bind(self));
+                self.optionalProductsModal.on('back', null, self._onModalBack.bind(self));
+    
+                return self.optionalProductsModal.opened();
+            });
+        },
+    })
+    return sAnimations.registry.WebsiteSaleOptions;
 })

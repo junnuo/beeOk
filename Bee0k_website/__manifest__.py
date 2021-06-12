@@ -7,13 +7,18 @@
 Bee0k Website customisation
 """,
     'depends': [
-        'portal', 'website',
+        'portal', 'website', 'website_sale', 'base',
     ],
     'data': [
         # views
         'views/portal_template.xml',
+        'views/templates.xml',
+        'views/partner_views.xml',
+        'views/sale_order_views.xml',
+        'views/delivery_availability_views.xml',
         # datas
         # security
+        'security/ir.model.access.csv',
         # wizard
         #reports
     ],

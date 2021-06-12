@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_delivery_availability,access_delivery_availability,model_delivery_availability,,1,1,1,1
+access_delivery_availability_zone,access_delivery_availability_zone,model_delivery_availability_zone,,1,1,1,1

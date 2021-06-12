@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_delivery_availability" model="ir.ui.view">
+        <field name="name">delivery.availability.form</field>
+            <field name="model">delivery.availability</field>
+            <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="day"/>
+                            <field name="start_hour" widget="float_time"/>
+                            <field name="end_hour" widget="float_time"/>
+                            <field name="is_available"/>
+                            <field name="is_take_away"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_delivery_availability_zone" model="ir.ui.view">
+        <field name="name">delivery.availability.zone.form</field>
+            <field name="model">delivery.availability.zone</field>
+            <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="zip"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_delivery_availability_tree" model="ir.ui.view">
+        <field name="name">delivery.availability.tree</field>
+            <field name="model">delivery.availability</field>
+            <field name="arch" type="xml">
+            <tree>
+                <field name="day"/>
+                <field name="start_hour" widget="float_time"/>
+                <field name="end_hour" widget="float_time"/>
+                <field name="is_available"/>
+                <field name="is_take_away"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_delivery_availability_zone_tree" model="ir.ui.view">
+        <field name="name">delivery.availability.zone.tree</field>
+            <field name="model">delivery.availability.zone</field>
+            <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="zip"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_delivery_availability_kanban" model="ir.ui.view">
+        <field name="name">delivery.availability.kanban</field>
+        <field name="model">delivery.availability</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="day"/>
+                <field name="end_hour"/>
+                <field name="start_hour"/>
+                <field name="is_available"/>
+                <field name="is_take_away"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="row mb4">
+                                <div class="col-6">
+                                    <strong><span><t t-esc="record.day.value"/></span></strong>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <strong><t t-esc="record.start_hour.value"/> - <t t-esc="record.end_hour.value"/></strong>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>
