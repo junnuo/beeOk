@@ -35,7 +35,7 @@
         </xpath>
     </template>
 
-    <template id="product_quantity_beeok" inherit_id="website.product" name="Products quantity beeok">
+    <template id="product_quantity_beeok" inherit_id="website_sale.product" name="Products quantity beeok">
         <xpath expr="//div[hasclass('css_quantity')]" position="replace">
             <div class="row">
                 <div class="col-6">
