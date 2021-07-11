@@ -25,3 +25,8 @@ class Product(models.Model):
                     rec.currency_id = gr_currency_id
             else:
                 rec.currency_id = self.env.user.company_id.currency_id
+
+class ProductCateg(models.Model):
+    _inherit = 'product.category'
+
+    is_fruit_vegetable = fields.Boolean(string='Fruit ou légume')
