@@ -54,13 +54,13 @@
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="display: inline-block;" t-if="product.currency_id.name == 'EKG'" id="info_qty">
-                        <p>Vous êtes sur le point d’ajouter <span id="add_qty_g"></span> grammes (<span id="add_qty_kg"></span> kg) de ce produit à votre
+                    <div class="display: inline-block;" t-if="(product.currency_id.name == 'EKG' or product.currency_id.name == 'EGR') and product.categ_id.name != 'Fruits et légumes'" id="info_qty">
+                        <p>Veuillez indiquer combien de <strong>grammes</strong> vous souhaitez commander. Vous êtes sur le point d’ajouter <span id="add_qty_g"></span> grammes (<span id="add_qty_kg"></span> kg) de ce produit à votre
         commande. Si cela vous convient, cliquez sur ajouter au panier.</p>
                     </div>
                 </div>
             </div>
-            <div t-if="product.currency_id.name == 'EKG'" id="consigne">
+            <div t-if="(product.currency_id.name == 'EKG' or product.currency_id.name == 'EGR') and product.categ_id.name != 'Fruits et légumes'" id="consigne">
                 <p>Veuillez selectionner un emballage</p>
                 <input type="radio" id="kraft" name="consigne" value="kraft"/>
                 <label for="kraft">Sachet kraft (0,10 €)</label><br/>
@@ -98,7 +98,7 @@
                 <input type="text" class="js_quantity form-control quantity" disabled="True" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty) == line.product_uom_qty and int(line.product_uom_qty) or line.product_uom_qty"/>
             </t>
             <t t-else="">
-                <t t-if="line.product_id.currency_id.name == 'EKG'">
+                <t t-if="line.product_id.currency_id.name == 'EKG' or line.product_id.currency_id.name == 'EGR'">
                     <input t-if="line.product_id.type != 'preparation_fees' and line.product_id.type != 'delivery_fees'" t-att-data-currency="line.product_id.currency_id.name" type="text" class="js_quantity form-control quantity" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="line.product_uom_qty*1000.0"/>
                 </t>
                 <t t-else="">

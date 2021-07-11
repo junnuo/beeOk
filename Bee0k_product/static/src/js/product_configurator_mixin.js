@@ -99,7 +99,7 @@ odoo.define('Bee0k_product.website_sale', function (require) {
             if (isNaN(value)) {
                 value = 1;
             }
-            if (value % 1 != 0 && $input.data('currency') != 'EKG'){
+            if (value % 1 != 0 && ($input.data('currency') != 'EKG' || $input.data('currency') != 'EGR')){
                 ev.target.value = old_value
             }
             else {
@@ -174,7 +174,6 @@ odoo.define('Bee0k_product.website_sale_beeok', function (require) {
     var website_sale = require('website_sale_options.website_sale');
     var core = require('web.core');
     var _t = core._t;
-    // sAnimations.registry.WebsiteSaleOptions = sAnimations.Class.extend(website_sale, {
 
     website_sale.include({
         _onClickAdd: function (ev) {

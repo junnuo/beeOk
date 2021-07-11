@@ -58,10 +58,11 @@ class Sale(models.Model):
             container = order_line.consigne
             if container:
                 container_line = self.order_line.filtered(lambda line: line.product_id.id == container.id)
-                container_line.product_uom_qty -= 1
-                if container_line.product_uom_qty == 0:
-                    container_line.unlink()
-        if request.env['product.product'].browse(int(product_id)).currency_id.name == 'EKG':
+                if container_line:
+                    container_line.product_uom_qty -= 1
+                    if container_line.product_uom_qty == 0:
+                        container_line.unlink()
+        if request.env['product.product'].browse(int(product_id)).currency_id.name == 'EKG' or request.env['product.product'].browse(int(product_id)).currency_id.name == 'EGR':
             if add_qty:
                 add_qty = str(float(add_qty)/1000.0)
             if set_qty:
@@ -82,6 +83,11 @@ class Sale(models.Model):
             else:
                 delivery_fees = 0.0
             order_line.price_unit = delivery_fees
+
+        if self.order_line:
+            list1 = ['consu', 'service', 'product']
+            if not any(item in list1 for item in self.order_line.mapped('product_id.type')):
+                self.order_line.unlink()
         return res
 
     @api.multi

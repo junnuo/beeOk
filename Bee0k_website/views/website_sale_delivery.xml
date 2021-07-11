@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo> 
+    <template id="website_sale_delivery" name="Delivery Costs" inherit_id="website_sale_delivery.payment_delivery">
+        <xpath expr="//div[@id='delivery_carrier']" position="replace">
+        </xpath>
+    </template>
+
+    <template id="cart_delivery" name="Delivery Costs" inherit_id="website_sale_delivery.cart_delivery">
+        <xpath expr="//tr[@id='order_delivery']" position="replace">
+        </xpath>
+    </template>
+</odoo>

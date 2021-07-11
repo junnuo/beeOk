@@ -19,5 +19,9 @@ class Product(models.Model):
                 ekg_currency_id = self.env['res.currency'].search([('name','=','EKG')])
                 if ekg_currency_id:
                     rec.currency_id = ekg_currency_id
+            elif rec.uom_id.name == '100g':
+                gr_currency_id = self.env['res.currency'].search([('name','=','EGR')])
+                if gr_currency_id:
+                    rec.currency_id = gr_currency_id
             else:
                 rec.currency_id = self.env.user.company_id.currency_id

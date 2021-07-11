@@ -33,16 +33,11 @@ class WebsiteSale(WebsiteSale):
         if kw.get('no_variant_attribute_values'):
             no_variant_attribute_values = json.loads(kw.get('no_variant_attribute_values'))
 
-        if request.env['product.product'].browse(int(product_id)).currency_id.name == 'EKG':
+        if (request.env['product.product'].browse(int(product_id)).currency_id.name == 'EKG'or request.env['product.product'].browse(int(product_id)).currency_id.name == 'EGR') and request.env['product.product'].browse(int(product_id)).categ_id.name != 'Fruits et légumes':
             if kw.get('consigne', False) == 'box':
                 container_id = request.env['product.product'].search([('type','=','box')]).id
             if kw.get('consigne', False) == 'kraft':
                 container_id = request.env['product.product'].search([('type','=','kraft')]).id
-            sale_order._cart_update(
-                product_id=container_id,
-                add_qty=1,
-                set_qty=0,
-            )
         else:
             container_id = False
 
@@ -55,6 +50,13 @@ class WebsiteSale(WebsiteSale):
             container=container_id,
         )
 
+        if container_id:
+            sale_order._cart_update(
+                    product_id=container_id,
+                    add_qty=1,
+                    set_qty=0,
+                )
+
         if not sale_order.order_line.filtered(lambda line: line.product_id.type == 'preparation_fees'):
             preparation_fees_id = request.env['product.product'].search([('type','=','preparation_fees')]).id
             sale_order._cart_update(
@@ -62,6 +64,21 @@ class WebsiteSale(WebsiteSale):
                 add_qty=1,
                 set_qty=0,
             )
+
+        import ipdb;ipdb.set_trace()
+        if sale_order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees'):
+            line = sale_order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees')
+            if line:
+                untaxed_amount = sale_order.amount_untaxed
+                if untaxed_amount < 50.0:
+                    delivery_fees = 7.0
+                elif untaxed_amount < 80.0:
+                    delivery_fees = 5.0
+                elif untaxed_amount < 110.0:
+                    delivery_fees = 3.0
+                else:
+                    delivery_fees = 0.0
+                line.price_unit = delivery_fees
 
         return request.redirect("/shop/cart")
 
