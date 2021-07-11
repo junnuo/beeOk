@@ -65,7 +65,6 @@ class WebsiteSale(WebsiteSale):
                 set_qty=0,
             )
 
-        import ipdb;ipdb.set_trace()
         if sale_order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees'):
             line = sale_order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees')
             if line:
