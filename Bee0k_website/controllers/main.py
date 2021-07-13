@@ -70,11 +70,11 @@ class WebsiteSale(WebsiteSale):
             if line:
                 untaxed_amount = sale_order.amount_untaxed
                 if untaxed_amount < 50.0:
-                    delivery_fees = 7.0
+                    delivery_fees = 5.79
                 elif untaxed_amount < 80.0:
-                    delivery_fees = 5.0
+                    delivery_fees = 4.13
                 elif untaxed_amount < 110.0:
-                    delivery_fees = 3.0
+                    delivery_fees = 2.48
                 else:
                     delivery_fees = 0.0
                 line.price_unit = delivery_fees

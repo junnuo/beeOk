@@ -53,7 +53,7 @@ odoo.define('Bee0k_product.ProductConfiguratorMixin', function (require) {
                 }
             }
             if (qty > combination.virtual_available
-                || combination.virtual_available < 1 || qty < 0) {
+                || combination.virtual_available < 0 || qty < 0) {
                 $parent.find('#add_to_cart').addClass('disabled out_of_stock');
             }
         }
