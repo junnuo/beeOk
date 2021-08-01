@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="display: inline-block;" t-if="(product.currency_id.name == 'EKG' or product.currency_id.name == 'EGR') and product.categ_id.name != 'Fruits et légumes'" id="info_qty">
+                    <div class="display: inline-block;" t-if="(product.currency_id.name == 'EKG' or product.currency_id.name == 'EGR')" id="info_qty">
                         <p>Veuillez indiquer combien de <strong>grammes</strong> vous souhaitez commander. Vous êtes sur le point d’ajouter <span id="add_qty_g"></span> grammes (<span id="add_qty_kg"></span> kg) de ce produit à votre
         commande. Si cela vous convient, cliquez sur ajouter au panier.</p>
                     </div>
