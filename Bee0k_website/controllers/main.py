@@ -77,7 +77,7 @@ class WebsiteSale(WebsiteSale):
                     delivery_fees = 2.48
                 else:
                     delivery_fees = 0.0
-                line.price_unit = delivery_fees
+                line.price_unit = 0.0
 
         return request.redirect("/shop/cart")
 
@@ -226,6 +226,10 @@ class WebsiteSaleForm(WebsiteSaleForm):
             order.write(data['record'])
 
         if data['custom']:
+            if kwargs.get('Give us your feedback', False):
+                comments = kwargs['Give us your feedback']
+                order.comments = comments
+
             time_slot_list = []
             for key in kwargs:
                 if key.isdigit():

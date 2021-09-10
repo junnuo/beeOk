@@ -24,6 +24,7 @@ class Sale(models.Model):
     take_away_end_hour = fields.Float()
     not_deliverable = fields.Boolean()
     way_of_delivery = fields.Selection([('take_away', 'Emporter'), ('delivery', 'Livraison')], string='Livraison/Emporter', default='take_away')
+    comments = fields.Text(string='Commentaire')
 
     def action_confirm(self):
         super().action_confirm()
@@ -82,7 +83,7 @@ class Sale(models.Model):
                 delivery_fees = 2.48
             else:
                 delivery_fees = 0.0
-            order_line.price_unit = delivery_fees
+            order_line.price_unit = 0.0
 
         if self.order_line:
             list1 = ['consu', 'service', 'product']

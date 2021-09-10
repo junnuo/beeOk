@@ -55,6 +55,11 @@
                         </group>
                     </group>
                 </page>
+                <page string="Commentaire">
+                    <group>
+                        <field name="comments"/>
+                    </group>
+                </page>
             </xpath>
         </field>
     </record>
