@@ -69,15 +69,15 @@ class WebsiteSale(WebsiteSale):
             line = sale_order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees')
             if line:
                 untaxed_amount = sale_order.amount_untaxed
-                if untaxed_amount < 50.0:
-                    delivery_fees = 5.79
-                elif untaxed_amount < 80.0:
-                    delivery_fees = 4.13
-                elif untaxed_amount < 110.0:
-                    delivery_fees = 2.48
+                if untaxed_amount < 40.0:
+                    delivery_fees = 4.96
+                elif untaxed_amount < 70.0:
+                    delivery_fees = 3.30
+                elif untaxed_amount < 100.0:
+                    delivery_fees = 1.65
                 else:
                     delivery_fees = 0.0
-                line.price_unit = 0.0
+                line.price_unit = delivery_fees
 
         return request.redirect("/shop/cart")
 

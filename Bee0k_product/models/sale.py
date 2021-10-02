@@ -75,15 +75,15 @@ class Sale(models.Model):
         if product_id and self.env['product.product'].browse(product_id).type == 'delivery_fees':
             order_line = self.env['sale.order.line'].browse(res.get('line_id'))
             untaxed_amount = order_line.order_id.amount_untaxed
-            if untaxed_amount < 50.0:
-                delivery_fees = 5.79
-            elif untaxed_amount < 80.0:
-                delivery_fees = 4.13
-            elif untaxed_amount < 110.0:
-                delivery_fees = 2.48
+            if untaxed_amount < 40.0:
+                delivery_fees = 4.96
+            elif untaxed_amount < 70.0:
+                delivery_fees = 3.30
+            elif untaxed_amount < 100.0:
+                delivery_fees = 1.65
             else:
                 delivery_fees = 0.0
-            order_line.price_unit = 0.0
+            order_line.price_unit = delivery_fees
 
         if self.order_line:
             list1 = ['consu', 'service', 'product']
