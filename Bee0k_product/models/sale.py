@@ -68,6 +68,11 @@ class Sale(models.Model):
                 add_qty = str(float(add_qty)/1000.0)
             if set_qty:
                 set_qty = float(set_qty)/1000.0
+        product = request.env['product.product'].browse(int(product_id))
+        consigne_product = product.consigne_id
+        if consigne_product:
+            consigne_line = self.order_line.filtered(lambda line: line.product_id.id == consigne_product.id)
+            super()._cart_update(consigne_product.id, consigne_line.id, add_qty, set_qty, **kwargs)
         res = super()._cart_update(product_id, line_id, add_qty, set_qty, **kwargs)
         if kwargs.get('container', False):
             order_line = self.env['sale.order.line'].browse(res.get('line_id'))

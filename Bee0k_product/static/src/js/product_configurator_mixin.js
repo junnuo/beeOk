@@ -177,13 +177,13 @@ odoo.define('Bee0k_product.website_sale_beeok', function (require) {
 
     website_sale.include({
         _onClickAdd: function (ev) {
-            if ($('#info_qty')[0]){
+            if ($('#consigne')[0]){
                 if ($('#kraft')[0] || $('#box')[0]){
                     var kraft = $('#kraft')[0].checked;
                     var box = $('#box')[0].checked;
                 }
             }
-            if (($('#kraft')[0] || $('#box')[0]) && $('#info_qty')[0] && (!kraft && !box)){
+            if (($('#kraft')[0] || $('#box')[0]) && $('#consigne')[0] && (!kraft && !box)){
                 $('#warning_container')[0].innerHTML = "Veuillez choisir un contenant avant d'ajouter le produit";
             }
             else if(!$('#info_qty')[0] && parseFloat($('input[name="add_qty"]').val() || 1) % 1 != 0){

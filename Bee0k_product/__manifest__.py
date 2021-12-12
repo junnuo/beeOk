@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Bee0k Product',
-    'version': '1.0.0',
+    'version': '1.0.1',
     'summary': 'Bee0k Product',
     'description': """
 Bee0k Product customisation

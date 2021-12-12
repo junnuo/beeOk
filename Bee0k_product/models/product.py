@@ -7,8 +7,11 @@ class Product(models.Model):
     currency_id = fields.Many2one(
         'res.currency', 'Currency',
         required=True, compute='_get_currency_id')
-    type = fields.Selection(selection_add=[('box', 'Box'), ('kraft', 'Kraft'), ('preparation_fees', 'Frais de préparation'), ('delivery_fees', 'Frais de livraison')])
-
+    type = fields.Selection(selection_add=[('box', 'Box'), ('kraft', 'Kraft'), ('preparation_fees', 'Frais de préparation'), ('delivery_fees', 'Frais de livraison'), ('consigne', 'Consigne')])
+    has_consigne = fields.Boolean('Produit avec consigne')
+    consigne_id = fields.Many2one('product.product', string='Consigne')
+    need_box_kraft = fields.Boolean(string='Produit nécessitant une boite ou un sachet')
+    
     def get_curreny(self):
         return self.currency_id.name
 

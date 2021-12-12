@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Bee0k Website',
-    'version': '1.0.0',
+    'version': '1.0.1',
     'summary': 'Bee0k Website',
     'description': """
 Bee0k Website customisation

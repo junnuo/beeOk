@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            <div t-if="(product.currency_id.name == 'EKG' or product.currency_id.name == 'EGR') and product.categ_id.name != 'Fruits et légumes'" id="consigne">
+            <div t-if="product.need_box_kraft or ((product.currency_id.name == 'EKG' or product.currency_id.name == 'EGR') and product.categ_id.name != 'Fruits et légumes')" id="consigne">
                 <p>Veuillez selectionner un emballage</p>
                 <input type="radio" id="kraft" name="consigne" value="kraft"/>
                 <label for="kraft">Sachet kraft (0,10 €)</label><br/>
@@ -85,16 +85,16 @@
 
     <template id="cart_lines" inherit_id="website_sale.cart_lines" name="Shopping Cart Lines">
         <xpath expr="//a[hasclass('js_delete_product')]" position="attributes">
-            <attribute name="t-if">line.product_id.type != 'box' and line.product_id.type != 'kraft' and line.product_id.type != 'preparation_fees' and line.product_id.type != 'delivery_fees'</attribute>
+            <attribute name="t-if">line.product_id.type != 'box' and line.product_id.type != 'kraft' and line.product_id.type != 'preparation_fees' and line.product_id.type != 'delivery_fees' and line.product_id.type != 'consigne'</attribute>
         </xpath>
         <xpath expr="//i[hasclass('fa-minus')]/.." position="attributes">
-            <attribute name="t-if">line.product_id.type != 'box' and line.product_id.type != 'kraft' and line.product_id.type != 'preparation_fees' and line.product_id.type != 'delivery_fees'</attribute>
+            <attribute name="t-if">line.product_id.type != 'box' and line.product_id.type != 'kraft' and line.product_id.type != 'preparation_fees' and line.product_id.type != 'delivery_fees' and line.product_id.type != 'consigne'</attribute>
         </xpath>
         <xpath expr="//i[hasclass('fa-plus')]/.." position="attributes">
-            <attribute name="t-if">line.product_id.type != 'box' and line.product_id.type != 'kraft' and line.product_id.type != 'preparation_fees' and line.product_id.type != 'delivery_fees'</attribute>
+            <attribute name="t-if">line.product_id.type != 'box' and line.product_id.type != 'kraft' and line.product_id.type != 'preparation_fees' and line.product_id.type != 'delivery_fees' and line.product_id.type != 'consigne'</attribute>
         </xpath>
         <xpath expr="//input[hasclass('js_quantity')]" position="replace">
-            <t t-if="line.product_id.type == 'box' or line.product_id.type == 'kraft'">
+            <t t-if="line.product_id.type == 'box' or line.product_id.type == 'kraft' or line.product_id.type == 'consigne'">
                 <input type="text" class="js_quantity form-control quantity" disabled="True" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty) == line.product_uom_qty and int(line.product_uom_qty) or line.product_uom_qty"/>
             </t>
             <t t-else="">

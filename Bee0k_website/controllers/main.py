@@ -33,11 +33,10 @@ class WebsiteSale(WebsiteSale):
         if kw.get('no_variant_attribute_values'):
             no_variant_attribute_values = json.loads(kw.get('no_variant_attribute_values'))
 
-        if (request.env['product.product'].browse(int(product_id)).currency_id.name == 'EKG'or request.env['product.product'].browse(int(product_id)).currency_id.name == 'EGR') and request.env['product.product'].browse(int(product_id)).categ_id.name != 'Fruits et légumes':
-            if kw.get('consigne', False) == 'box':
-                container_id = request.env['product.product'].search([('type','=','box')]).id
-            if kw.get('consigne', False) == 'kraft':
-                container_id = request.env['product.product'].search([('type','=','kraft')]).id
+        if kw.get('consigne', False) == 'box':
+            container_id = request.env['product.product'].search([('type','=','box')]).id
+        elif kw.get('consigne', False) == 'kraft':
+            container_id = request.env['product.product'].search([('type','=','kraft')]).id
         else:
             container_id = False
 
