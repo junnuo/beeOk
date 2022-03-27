@@ -98,7 +98,7 @@ class WebsiteSale(WebsiteSale):
                 product_id=delivery_fees_id,
                 add_qty=1,
             )
-        if order.way_of_delivery == 'take_away' and order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees'):
+        if (order.way_of_delivery == 'take_away' or order.way_of_delivery == 'collect')  and order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees'):
             order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees').unlink()
         return super(WebsiteSale, self).payment(**post)
 
@@ -245,7 +245,7 @@ class WebsiteSaleForm(WebsiteSaleForm):
                     order.take_away_date = day_mapping[availability.day]
                     order.take_away_start_hour = availability.start_hour
                     order.take_away_end_hour = availability.end_hour
-            else:
+            elif kwargs['choice'] == 'delivery':
                 order.way_of_delivery = 'delivery'
                 if len(time_slot_list) > 3:
                     order.warning_high = True
@@ -270,6 +270,8 @@ class WebsiteSaleForm(WebsiteSaleForm):
                             order.third_date = day_mapping[availability.day]
                             order.third_time = availability.start_hour
                             order.third_time_end = availability.end_hour
+            else:
+                order.way_of_delivery = 'collect'
         else:
             order.warning_low = True
 

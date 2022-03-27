@@ -31,7 +31,14 @@
                 <input type="radio" id="take_away" name="choice" value="take_away" t-att-checked="way_of_delivery == 'take_away'"/>
                 <label for="choice">Venir chercher sur place (21 Hortensialaan, 1731 Zellik)</label><br/>
                 <input type="radio" id="delivery" name="choice" value="delivery" t-att-checked="way_of_delivery == 'delivery'"/>
-                <label for="choice">Livraison à domicile</label>
+                <label for="choice">Livraison à domicile</label><br/>
+                <input type="radio" id="collect" name="choice" value="collect" t-att-checked="way_of_delivery == 'collect'"/>
+                <label for="choice">Point de collecte: "by strofila - Av. de Hinnisdael 14, 1150, Woluwe-Saint-Pierre"</label>
+            </div>
+            <div style="margin: 5%;" id="collect_slot">
+                <div>
+                    <h4>Horaire de collecte: mercredi entre 12:00 et 19:00</h4>
+                </div>
             </div>
             <div style="margin: 5%;" id="take_away_slot">
                 <div>
@@ -175,18 +182,30 @@
                 if ($('#take_away')[0].checked){
                     $('#take_away_slot').show()
                     $('#delivery_slot').hide()
-                }
-                else {
+                    $('#collect_slot').hide()
+                } else if ($('#collect')[0].checked) {
+                    $('#collect_slot').show()
+                    $('#take_away_slot').hide()
+                    $('#delivery_slot').hide()
+                } else {
                     $('#delivery_slot').show()
                     $('#take_away_slot').hide()
+                    $('#collect_slot').hide()
                 }
                 $('#take_away').click(function(){
                     $('#take_away_slot').show()
                     $('#delivery_slot').hide()
+                    $('#collect_slot').hide()
                 });
                 $('#delivery').click(function(){
                     $('#delivery_slot').show()
                     $('#take_away_slot').hide()
+                    $('#collect_slot').hide()
+                });
+                $('#collect').click(function(){
+                    $('#delivery_slot').hide()
+                    $('#take_away_slot').hide()
+                    $('#collect_slot').show()
                 });
             </script>
         </xpath>

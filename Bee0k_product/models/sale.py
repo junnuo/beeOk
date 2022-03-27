@@ -23,7 +23,7 @@ class Sale(models.Model):
     take_away_start_hour = fields.Float()
     take_away_end_hour = fields.Float()
     not_deliverable = fields.Boolean()
-    way_of_delivery = fields.Selection([('take_away', 'Emporter'), ('delivery', 'Livraison')], string='Livraison/Emporter', default='take_away')
+    way_of_delivery = fields.Selection([('take_away', 'Emporter'), ('delivery', 'Livraison'), ('collect', 'Point de collecte')], string='Livraison/Emporter', default='take_away')
     comments = fields.Text(string='Commentaire')
 
     def action_confirm(self):
