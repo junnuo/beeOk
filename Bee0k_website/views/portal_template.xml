@@ -33,7 +33,7 @@
                 <input type="radio" id="delivery" name="choice" value="delivery" t-att-checked="way_of_delivery == 'delivery'"/>
                 <label for="choice">Livraison à domicile</label><br/>
                 <input type="radio" id="collect" name="choice" value="collect" t-att-checked="way_of_delivery == 'collect'"/>
-                <label for="choice">Point de collecte: "by strofila - Av. de Hinnisdael 14, 1150, Woluwe-Saint-Pierre"</label>
+                <label for="choice">Point de collecte "by strofila - Av. de Hinnisdael 14, 1150, Woluwe-Saint-Pierre"</label>
             </div>
             <div style="margin: 5%;" id="collect_slot">
                 <div>
