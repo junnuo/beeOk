@@ -26,7 +26,7 @@
 
     <template id="extra_info" name="Checkout Extra Info" inherit_id="website_sale.extra_info">
         <xpath expr="//input[@name='a_document']/../.." position="after">
-            <div style="margin: 10%;">
+            <div style="margin: 8%;">
                 <t t-set="way_of_delivery" t-value="order.way_of_delivery"/>
                 <input type="radio" id="take_away" name="choice" value="take_away" t-att-checked="way_of_delivery == 'take_away'"/>
                 <label for="choice">Venir chercher sur place (21 Hortensialaan, 1731 Zellik)</label><br/>
