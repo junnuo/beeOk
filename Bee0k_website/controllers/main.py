@@ -93,13 +93,21 @@ class WebsiteSale(WebsiteSale):
         if order.warning_low or order.warning_high or order.warning_low_take_away or order.warning_high_take_away or order.not_deliverable:
             return request.redirect('/shop/extra_info')
         if order.way_of_delivery == 'delivery' and not order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees'):
+            order.order_line.filtered(lambda line: line.product_id.type == 'collect_point_fees').unlink()
             delivery_fees_id = request.env['product.product'].search([('type','=','delivery_fees')]).id
             order._cart_update(
                 product_id=delivery_fees_id,
                 add_qty=1,
             )
-        if (order.way_of_delivery == 'take_away' or order.way_of_delivery == 'collect')  and order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees'):
+        if order.way_of_delivery == 'take_away' and order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees' or line.product_id.type == 'collect_point_fees'):
+            order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees' or line.product_id.type == 'collect_point_fees').unlink()
+        if (order.way_of_delivery == 'collect' or order.way_of_delivery == 'collect2') and not order.order_line.filtered(lambda line: line.product_id.type == 'collect_point_fees'):
             order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees').unlink()
+            collect_fees_id = request.env['product.product'].search([('type','=','collect_point_fees')]).id
+            order._cart_update(
+                product_id=collect_fees_id,
+                add_qty=1,
+            )
         return super(WebsiteSale, self).payment(**post)
 
     def _get_mandatory_shipping_fields(self):

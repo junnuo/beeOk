@@ -24,6 +24,18 @@
         </field>
     </record>
 
+    <record id="action_collect_availability" model="ir.actions.act_window">
+        <field name="name">Collect availability</field>
+        <field name="res_model">collect.availability</field>
+        <field name='view_type'>form</field>
+        <field name='view_mode'>tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new collect availability
+            </p>
+        </field>
+    </record>
+
     <menuitem id="menu_ecommerce_delivery_availability"
         action="action_delivery_availability"
         parent="website_sale.menu_ecommerce_settings" name="Delivery availability"/>
@@ -31,4 +43,8 @@
     <menuitem id="menu_ecommerce_delivery_available_zone"
         action="action_delivery_available_zone"
         parent="website_sale.menu_ecommerce_settings" name="Delivery availabile zone"/>
+
+    <menuitem id="menu_ecommerce_collect_availability"
+        action="action_collect_availability"
+        parent="website_sale.menu_ecommerce_settings" name="Collect availability"/>
 </odoo>

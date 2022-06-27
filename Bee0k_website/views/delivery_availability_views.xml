@@ -89,4 +89,66 @@
             </kanban>
         </field>
     </record>
+
+    <record id="view_collect_availability" model="ir.ui.view">
+        <field name="name">collect.availability.form</field>
+            <field name="model">collect.availability</field>
+            <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="collect_point"/>
+                            <field name="day"/>
+                            <field name="start_hour" widget="float_time"/>
+                            <field name="end_hour" widget="float_time"/>
+                            <field name="is_available"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_collect_availability_tree" model="ir.ui.view">
+        <field name="name">collect.availability.tree</field>
+            <field name="model">collect.availability</field>
+            <field name="arch" type="xml">
+            <tree>
+                <field name="collect_point"/>
+                <field name="day"/>
+                <field name="start_hour" widget="float_time"/>
+                <field name="end_hour" widget="float_time"/>
+                <field name="is_available"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_collect_availability_kanban" model="ir.ui.view">
+        <field name="name">collect.availability.kanban</field>
+        <field name="model">collect.availability</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="collect_point"/>
+                <field name="day"/>
+                <field name="end_hour"/>
+                <field name="start_hour"/>
+                <field name="is_available"/>/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="row mb4">
+                                <div class="col-6">
+                                    <strong><span><t t-esc="record.day.value"/></span></strong>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <strong><t t-esc="record.start_hour.value"/> - <t t-esc="record.end_hour.value"/></strong>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
 </odoo>

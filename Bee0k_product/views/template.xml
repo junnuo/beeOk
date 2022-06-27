@@ -60,12 +60,15 @@
                     </div>
                 </div>
             </div>
-            <div t-if="product.need_box_kraft or ((product.currency_id.name == 'EKG' or product.currency_id.name == 'EGR') and product.categ_id.name != 'Fruits et légumes')" id="consigne">
+            <div t-if="product.need_box_kraft" id="consigne">
                 <p>Veuillez selectionner un emballage</p>
                 <input type="radio" id="kraft" name="consigne" value="kraft"/>
                 <label for="kraft">Sachet kraft (0,10 €)</label><br/>
                 <input type="radio" id="box" name="consigne" value="box"/>
                 <label for="box">Boîte réutilisable (4,00 €)</label>
+            </div>
+            <div t-if="product.consigne_id" id="consigne" style="margin-top: 5%;">
+                <h4><span t-esc="product.consigne_id.name"/> (<span t-esc="product.consigne_id.lst_price"/> €)</h4>
             </div>
         </xpath>
         <xpath expr="//a[@id='add_to_cart']" position="after">

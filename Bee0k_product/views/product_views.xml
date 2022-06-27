@@ -11,6 +11,7 @@
                 <field name="has_consigne"/>
                 <field name="consigne_id" domain="[('type', '=', 'consigne')]" attrs="{'invisible': [('has_consigne','=',False)]}"/>
                 <field name="need_box_kraft"/>
+                <field name="qty_per_consigne"/>
             </xpath>
         </field>
     </record>

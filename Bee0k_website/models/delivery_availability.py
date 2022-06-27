@@ -19,3 +19,10 @@ class DeliveryAvailabilityZone(models.Model):
 
     name = fields.Char(string='Nom')
     zip = fields.Char(string='Zip')
+
+
+class CollectAvailability(models.Model):
+    _name = 'collect.availability'
+    _inherit = 'delivery.availability'
+
+    collect_point = fields.Selection([('collect', 'Strofilia'), ('collect2', 'Erasmus')])

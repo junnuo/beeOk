@@ -23,7 +23,7 @@ class Sale(models.Model):
     take_away_start_hour = fields.Float()
     take_away_end_hour = fields.Float()
     not_deliverable = fields.Boolean()
-    way_of_delivery = fields.Selection([('take_away', 'Emporter'), ('delivery', 'Livraison'), ('collect', 'Point de collecte')], string='Livraison/Emporter', default='take_away')
+    way_of_delivery = fields.Selection([('take_away', 'Emporter'), ('delivery', 'Livraison'), ('collect', 'Point de collecte: Strofilia'), ('collect2', 'Point de collecte: Erasmus')], string='Livraison/Emporter', default='take_away')
     comments = fields.Text(string='Commentaire')
 
     def action_confirm(self):
@@ -63,17 +63,40 @@ class Sale(models.Model):
                     container_line.product_uom_qty -= 1
                     if container_line.product_uom_qty == 0:
                         container_line.unlink()
+        add_qty_product = add_qty
+        set_qty_product = set_qty
         if request.env['product.product'].browse(int(product_id)).currency_id.name == 'EKG' or request.env['product.product'].browse(int(product_id)).currency_id.name == 'EGR':
             if add_qty:
-                add_qty = str(float(add_qty)/1000.0)
+                add_qty_product = str(float(add_qty)/1000.0)
             if set_qty:
-                set_qty = float(set_qty)/1000.0
+                set_qty_product = str(float(set_qty)/1000.0)
         product = request.env['product.product'].browse(int(product_id))
         consigne_product = product.consigne_id
         if consigne_product:
+            add_qty_consigne = add_qty
+            set_qty_consigne = set_qty
+
+            if add_qty_consigne and product.qty_per_consigne:
+                add_qty_consigne = float(add_qty_consigne) // product.qty_per_consigne
+                if add_qty_consigne:
+                    if add_qty % product.qty_per_consigne:
+                        add_qty_consigne += 1
+                else:
+                    add_qty_consigne = 1
+                add_qty_consigne = str(add_qty_consigne)
+            
+            if set_qty_consigne and product.qty_per_consigne:
+                set_qty_consigne = float(set_qty_consigne) // product.qty_per_consigne
+                if set_qty_consigne:
+                    if set_qty % product.qty_per_consigne:
+                        set_qty_consigne += 1
+                else:
+                    set_qty_consigne = 1
+                set_qty_consigne = str(set_qty_consigne)
+
             consigne_line = self.order_line.filtered(lambda line: line.product_id.id == consigne_product.id)
-            super()._cart_update(consigne_product.id, consigne_line.id, add_qty, set_qty, **kwargs)
-        res = super()._cart_update(product_id, line_id, add_qty, set_qty, **kwargs)
+            super()._cart_update(consigne_product.id, consigne_line.id, add_qty_consigne, set_qty_consigne, **kwargs)
+        res = super()._cart_update(product_id, line_id, add_qty_product, set_qty_product, **kwargs)
         if kwargs.get('container', False):
             order_line = self.env['sale.order.line'].browse(res.get('line_id'))
             order_line.write({'consigne': kwargs.get('container')})
