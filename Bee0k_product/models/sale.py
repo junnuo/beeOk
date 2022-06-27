@@ -79,7 +79,7 @@ class Sale(models.Model):
             if add_qty_consigne and product.qty_per_consigne:
                 add_qty_consigne = float(add_qty_consigne) // product.qty_per_consigne
                 if add_qty_consigne:
-                    if add_qty % product.qty_per_consigne:
+                    if float(add_qty) % product.qty_per_consigne:
                         add_qty_consigne += 1
                 else:
                     add_qty_consigne = 1
@@ -88,7 +88,7 @@ class Sale(models.Model):
             if set_qty_consigne and product.qty_per_consigne:
                 set_qty_consigne = float(set_qty_consigne) // product.qty_per_consigne
                 if set_qty_consigne:
-                    if set_qty % product.qty_per_consigne:
+                    if float(set_qty) % product.qty_per_consigne:
                         set_qty_consigne += 1
                 else:
                     set_qty_consigne = 1
