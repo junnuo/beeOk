@@ -278,8 +278,10 @@ class WebsiteSaleForm(WebsiteSaleForm):
                             order.third_date = day_mapping[availability.day]
                             order.third_time = availability.start_hour
                             order.third_time_end = availability.end_hour
-            else:
+            elif kwargs['choice'] == 'collect':
                 order.way_of_delivery = 'collect'
+            else:
+                order.way_of_delivery = 'collect2'
         else:
             order.warning_low = True
 
