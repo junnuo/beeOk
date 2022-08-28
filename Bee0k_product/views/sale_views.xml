@@ -43,7 +43,7 @@
                         </group>
                     </group>
                 </page>
-                <page string="Horaire de récupération" attrs="{'invisible': [('way_of_delivery','!=','take_away')]}">
+                <page string="Horaire de récupération" attrs="{'invisible': [('way_of_delivery','not in', ['take_away', 'collect', 'collect2'])]}">
                     <group>
                         <group>
                             <label for="take_away_date"/>

@@ -280,8 +280,26 @@ class WebsiteSaleForm(WebsiteSaleForm):
                             order.third_time_end = availability.end_hour
             elif kwargs['choice'] == 'collect':
                 order.way_of_delivery = 'collect'
+                if len(time_slot_list) < 1:
+                    order.warning_low_take_away = True
+                elif len(time_slot_list) > 1:
+                    order.warning_high_take_away = True
+                else:
+                    availability = request.env['collect.availability'].browse(time_slot_list[0])
+                    order.take_away_date = day_mapping[availability.day]
+                    order.take_away_start_hour = availability.start_hour
+                    order.take_away_end_hour = availability.end_hour
             else:
                 order.way_of_delivery = 'collect2'
+                if len(time_slot_list) < 1:
+                    order.warning_low_take_away = True
+                elif len(time_slot_list) > 1:
+                    order.warning_high_take_away = True
+                else:
+                    availability = request.env['collect.availability'].browse(time_slot_list[0])
+                    order.take_away_date = day_mapping[availability.day]
+                    order.take_away_start_hour = availability.start_hour
+                    order.take_away_end_hour = availability.end_hour
         else:
             order.warning_low = True
 

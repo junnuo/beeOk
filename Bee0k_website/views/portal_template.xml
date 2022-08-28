@@ -48,6 +48,7 @@
                     <t t-foreach="slots" t-as="slot">
                         <ul style="list-style-type: none;">
                             <li>
+                                <input type="checkbox" t-att-value="slot.id" t-att-name="slot.id"/>
                                 <span t-esc="trad[slot.day]"/> entre <span t-esc="slot.start_hour" t-options="{'widget': 'float_time'}"/> et <span t-esc="slot.end_hour" t-options="{'widget': 'float_time'}"/>
                             </li>
                         </ul>
@@ -65,6 +66,7 @@
                     <t t-foreach="slots" t-as="slot">
                         <ul style="list-style-type: none;">
                             <li>
+                                <input type="checkbox" t-att-value="slot.id" t-att-name="slot.id"/>
                                 <span t-esc="trad[slot.day]"/> entre <span t-esc="slot.start_hour" t-options="{'widget': 'float_time'}"/> et <span t-esc="slot.end_hour" t-options="{'widget': 'float_time'}"/>
                             </li>
                         </ul>
