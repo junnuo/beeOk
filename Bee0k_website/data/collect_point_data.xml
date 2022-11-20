@@ -1,0 +1,16 @@
+<odoo>
+    <data noupdate="1">
+        <record id="strofilia" model="collect.point">
+            <field name="name">strofilia</field>
+            <field name="description">by strofilia - Av. de Hinnisdael 14, 1150, Woluwe-Saint-Pierre</field>
+        </record>
+        <record id="erasmus_corner" model="collect.point">
+            <field name="name">Erasmus Corner</field>
+            <field name="description">Erasmus Corner - Route de Lennik 808, 1070, Anderlecht</field>
+        </record>
+        <record id="segers" model="collect.point">
+            <field name="name">Maison Segers / Huis Segers</field>
+            <field name="description">Maison Segers / Huis Segers - Rue Jourdan 187, 1060 Saint-Gilles</field>
+        </record>
+    </data>
+</odoo>

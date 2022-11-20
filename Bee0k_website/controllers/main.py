@@ -101,7 +101,7 @@ class WebsiteSale(WebsiteSale):
             )
         if order.way_of_delivery == 'take_away' and order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees' or line.product_id.type == 'collect_point_fees'):
             order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees' or line.product_id.type == 'collect_point_fees').unlink()
-        if (order.way_of_delivery == 'collect' or order.way_of_delivery == 'collect2') and not order.order_line.filtered(lambda line: line.product_id.type == 'collect_point_fees'):
+        if (order.way_of_delivery == 'collect') and not order.order_line.filtered(lambda line: line.product_id.type == 'collect_point_fees'):
             order.order_line.filtered(lambda line: line.product_id.type == 'delivery_fees').unlink()
             collect_fees_id = request.env['product.product'].search([('type','=','collect_point_fees')]).id
             order._cart_update(
@@ -228,7 +228,6 @@ class WebsiteSaleForm(WebsiteSaleForm):
         order.third_time = False
         order.third_time_end = False
         order.not_deliverable = False
-
         if data['record']:
             order.write(data['record'])
 
@@ -278,19 +277,9 @@ class WebsiteSaleForm(WebsiteSaleForm):
                             order.third_date = day_mapping[availability.day]
                             order.third_time = availability.start_hour
                             order.third_time_end = availability.end_hour
-            elif kwargs['choice'] == 'collect':
+            elif kwargs['choice']:
                 order.way_of_delivery = 'collect'
-                if len(time_slot_list) < 1:
-                    order.warning_low_take_away = True
-                elif len(time_slot_list) > 1:
-                    order.warning_high_take_away = True
-                else:
-                    availability = request.env['collect.availability'].browse(time_slot_list[0])
-                    order.take_away_date = day_mapping[availability.day]
-                    order.take_away_start_hour = availability.start_hour
-                    order.take_away_end_hour = availability.end_hour
-            else:
-                order.way_of_delivery = 'collect2'
+                order.write({'collect_point_id': int(kwargs['choice'])})
                 if len(time_slot_list) < 1:
                     order.warning_low_take_away = True
                 elif len(time_slot_list) > 1:

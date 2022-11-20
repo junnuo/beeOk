@@ -21,8 +21,17 @@ class DeliveryAvailabilityZone(models.Model):
     zip = fields.Char(string='Zip')
 
 
+class CollectPoint(models.Model):
+    _name = "collect.point"
+    _description = "Collect Point"
+
+    name = fields.Char(string="Nom du point de collecte")
+    description = fields.Text(string="Description à afficher en ligne")
+
+
 class CollectAvailability(models.Model):
     _name = 'collect.availability'
     _inherit = 'delivery.availability'
 
     collect_point = fields.Selection([('collect', 'Strofilia'), ('collect2', 'Erasmus')])
+    collect_point_id = fields.Many2one("collect.point", string="Point de collecte")

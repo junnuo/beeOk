@@ -7,7 +7,7 @@
 Bee0k Product customisation
 """,
     'depends': [
-        'product', 'website_sale_stock', 'web', 'website_sale', 'sale',
+        'product', 'website_sale_stock', 'web', 'website_sale', 'sale', "Bee0k_website"
     ],
     'data': [
         # views

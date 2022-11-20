@@ -28,52 +28,36 @@
         <xpath expr="//input[@name='a_document']/../.." position="after">
             <div style="margin: 10%;">
                 <t t-set="way_of_delivery" t-value="order.way_of_delivery"/>
-                <input type="radio" id="take_away" name="choice" value="take_away" t-att-checked="way_of_delivery == 'take_away'"/>
+                <t t-set="collect_point_id" t-value="order.collect_point_id.id"/>
+                <input class="input_radio" type="radio" id="take_away" name="choice" value="take_away" t-att-checked="way_of_delivery == 'take_away'"/>
                 <label for="choice">Venir chercher sur place (21 Hortensialaan, 1731 Zellik)</label><br/>
-                <input type="radio" id="delivery" name="choice" value="delivery" t-att-checked="way_of_delivery == 'delivery'"/>
-                <label for="choice">Livraison à domicile</label><br/>
-                <input type="radio" id="collect" name="choice" value="collect" t-att-checked="way_of_delivery == 'collect'"/>
-                <label for="choice">Point de collecte "by strofilia - Av. de Hinnisdael 14, 1150, Woluwe-Saint-Pierre"</label><br/>
-                <input type="radio" id="collect2" name="choice" value="collect2" t-att-checked="way_of_delivery == 'collect2'"/>
-                <label for="choice">Point de collecte "Erasmus Corner - Route de Lennik 808, 1070, Anderlecht"</label>
-            </div>
-            <div style="margin: 5%;" id="collect_slot_2">
-                <div>
-                    <h4>Horaire de collecte:</h4>
-                </div><br/>
-                <t t-set="trad" t-value="{'monday': 'Lundi', 'tuesday': 'Mardi', 'wednesday': 'Mercredi', 'thursday': 'Jeudi', 'friday': 'Vendredi', 'saturday': 'Samedi', 'sunday': 'Dimanche'}"/>
-                <t t-set="days" t-value="['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']"/>
-                <t t-foreach="days" t-as="day">
-                    <t t-set="slots" t-value="request.env['collect.availability'].search([('is_available','=',True), ('collect_point', '=', 'collect2'), ('day', '=', day)], order='start_hour')"/>
-                    <t t-foreach="slots" t-as="slot">
-                        <ul style="list-style-type: none;">
-                            <li>
-                                <input type="checkbox" t-att-value="slot.id" t-att-name="slot.id"/>
-                                <span t-esc="trad[slot.day]"/> entre <span t-esc="slot.start_hour" t-options="{'widget': 'float_time'}"/> et <span t-esc="slot.end_hour" t-options="{'widget': 'float_time'}"/>
-                            </li>
-                        </ul>
-                    </t>
+                <input class="input_radio" type="radio" id="delivery" name="choice" value="delivery" t-att-checked="way_of_delivery == 'delivery'"/>
+                <label class="input_radio" for="choice">Livraison à domicile</label><br/>
+                <t t-foreach="request.env['collect.point'].search([])" t-as="collect_point">
+                    <input class="input_radio" type="radio" t-att-id="collect_point.id" name="choice" t-att-value="collect_point.id" t-att-checked="way_of_delivery == 'collect' and collect_point_id == collect_point.id"/>
+                    <label for="choice" t-esc="collect_point.description"/><br/>
                 </t>
             </div>
-            <div style="margin: 5%;" id="collect_slot">
-                <div>
-                    <h4>Horaire de collecte:</h4>
-                </div><br/>
-                <t t-set="trad" t-value="{'monday': 'Lundi', 'tuesday': 'Mardi', 'wednesday': 'Mercredi', 'thursday': 'Jeudi', 'friday': 'Vendredi', 'saturday': 'Samedi', 'sunday': 'Dimanche'}"/>
-                <t t-set="days" t-value="['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']"/>
-                <t t-foreach="days" t-as="day">
-                    <t t-set="slots" t-value="request.env['collect.availability'].search([('is_available','=',True), ('collect_point', '=', 'collect'), ('day', '=', day)], order='start_hour')"/>
-                    <t t-foreach="slots" t-as="slot">
-                        <ul style="list-style-type: none;">
-                            <li>
-                                <input type="checkbox" t-att-value="slot.id" t-att-name="slot.id"/>
-                                <span t-esc="trad[slot.day]"/> entre <span t-esc="slot.start_hour" t-options="{'widget': 'float_time'}"/> et <span t-esc="slot.end_hour" t-options="{'widget': 'float_time'}"/>
-                            </li>
-                        </ul>
+            <t t-set="trad" t-value="{'monday': 'Lundi', 'tuesday': 'Mardi', 'wednesday': 'Mercredi', 'thursday': 'Jeudi', 'friday': 'Vendredi', 'saturday': 'Samedi', 'sunday': 'Dimanche'}"/>
+            <t t-set="days" t-value="['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']"/>
+            <t t-foreach="request.env['collect.point'].search([])" t-as="collect_point">
+                <div style="margin: 5%;" t-attf-id="#{collect_point.id}_slot">
+                    <div>
+                        <h4>Horaire de collecte:</h4>
+                    </div><br/>
+                    <t t-foreach="days" t-as="day">
+                        <t t-set="slots" t-value="request.env['collect.availability'].search([('is_available','=',True), ('collect_point_id', '=', collect_point.id), ('day', '=', day)], order='start_hour')"/>
+                        <t t-foreach="slots" t-as="slot">
+                            <ul style="list-style-type: none;">
+                                <li>
+                                    <input type="checkbox" t-att-value="slot.id" t-att-name="slot.id"/>
+                                    <span t-esc="trad[slot.day]"/> entre <span t-esc="slot.start_hour" t-options="{'widget': 'float_time'}"/> et <span t-esc="slot.end_hour" t-options="{'widget': 'float_time'}"/>
+                                </li>
+                            </ul>
+                        </t>
                     </t>
-                </t>
-
-            </div>
+                </div>
+            </t>
             <div style="margin: 5%;" id="take_away_slot">
                 <div>
                     <h4>Veuillez choisir un horaire pour la récupération de la commande</h4>
@@ -213,52 +197,28 @@
                 </div>
             </div>
             <script>
-                if ($('#take_away')[0].checked){
-                    $('#take_away_slot').show()
-                    $('#delivery_slot').hide()
-                    $('#collect_slot').hide()
-                    $('#collect_slot_2').hide()
-                } else if ($('#collect')[0].checked) {
-                    $('#collect_slot').show()
-                    $('#take_away_slot').hide()
-                    $('#delivery_slot').hide()
-                    $('#collect_slot_2').hide()
-                }
-                else if ($('#collect2')[0].checked) {
-                    $('#collect_slot').hide()
-                    $('#take_away_slot').hide()
-                    $('#delivery_slot').hide()
-                    $('#collect_slot_2').show()
-                } else {
-                    $('#delivery_slot').show()
-                    $('#take_away_slot').hide()
-                    $('#collect_slot').hide()
-                    $('#collect_slot_2').hide()
+                for (input_radio in $('.input_radio')) {
+                    input = $('.input_radio')[input_radio]
+                    checkbox_id = '#' + input.id + '_slot'
+                    if (input.checked) {
+                        $(checkbox_id).show()
+                    }
+                    else {
+                        $(checkbox_id).hide()
+                    }
                 }
 
-                $('#take_away').click(function(){
-                    $('#take_away_slot').show()
-                    $('#delivery_slot').hide()
-                    $('#collect_slot').hide()
-                    $('#collect_slot_2').hide()
-                });
-                $('#delivery').click(function(){
-                    $('#delivery_slot').show()
-                    $('#take_away_slot').hide()
-                    $('#collect_slot').hide()
-                    $('#collect_slot_2').hide()
-                });
-                $('#collect').click(function(){
-                    $('#delivery_slot').hide()
-                    $('#take_away_slot').hide()
-                    $('#collect_slot').show()
-                    $('#collect_slot_2').hide()
-                });
-                $('#collect2').click(function(){
-                    $('#delivery_slot').hide()
-                    $('#take_away_slot').hide()
-                    $('#collect_slot').hide()
-                    $('#collect_slot_2').show()
+                $('.input_radio').click(function(ev){
+                    for (input_radio in $('.input_radio')) {
+                        input = $('.input_radio')[input_radio]
+                        checkbox_id = '#' + input.id + '_slot'
+                        if (input.id === ev.currentTarget.id) {
+                            $(checkbox_id).show()
+                        }
+                        else {
+                            $(checkbox_id).hide()
+                        }
+                    }
                 });
             </script>
         </xpath>

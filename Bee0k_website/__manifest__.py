@@ -18,6 +18,7 @@ Bee0k Website customisation
         'views/delivery_availability_views.xml',
         'views/website_sale_delivery.xml',
         # datas
+        "data/collect_point_data.xml",
         # security
         'security/ir.model.access.csv',
         # wizard
